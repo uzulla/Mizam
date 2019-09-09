@@ -1,0 +1,13 @@
+# レンサバ用、想定していない(Virtual)Hostを拒否
+SetEnvIf Host "^your.domain.test$" host
+order allow,deny
+allow from env=host
+
+# アプリ用のRewrite
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php [QSA,L]
+
+# 実行env指定、以下の場合は`sakura.env`を読み込むようになります。
+SetEnv ENV sakura

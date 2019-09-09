@@ -1,0 +1,11 @@
+/composer.phar
+/db/sqlite.db
+/*.cache
+/*.env
+!/sample.env
+/db/generate_*.sql
+/upload_files/original_files/*
+!/upload_files/original_files/.gitkeep
+/upload_files/thumbnail_files/*
+!/upload_files/thumbnail_files/.gitkeep
+/restriction_htdocs/

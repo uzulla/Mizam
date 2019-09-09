@@ -1,0 +1,54 @@
+{% extends "parts/generic_frame.twig" %}
+
+{% block content %}
+    <h3>Sign up</h3>
+
+    <div class="row">
+    {% if errors %}
+        <div class="row error">
+            please check and fix problem(s).
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <form action="/sign/up" method="post" class="col s12">
+
+            <div class="row">
+                <div class="input-field col s4">
+                    <input placeholder="user@example.jp" type="text" name="login_id" value="{{ login_id }}"
+                           class="validate">
+                    <label for="first_name">
+                        * Login id(email)
+                        {% if errors.login_id %}
+                            <span class="error">{{ errors.login_id }}</span>
+                        {% endif %}
+                    </label>
+                </div>
+                <div class="input-field col s4">
+                    <input placeholder="****" id="password" type="password" name="password" class="validate"
+                           value="{{ password }}">
+                    <label for="password">
+                        * Password
+                        {% if errors.password %}
+                            <span class="error">{{ errors.password }}</span>
+                        {% endif %}
+                    </label>
+                </div>
+                <div class="input-field col s4">
+                    <input placeholder="nick" id="nick" type="text" name="nick" class="validate" value="{{ nick }}">
+                    <label for="nick">
+                        * Nickname
+                        {% if errors.nick %}
+                            <span class="error">{{ errors.nick }}</span>
+                        {% endif %}
+                    </label>
+                </div>
+
+                <div class="input-field col s4">
+                    <button class="btn-large" type="submit">sign up</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+{% endblock %}

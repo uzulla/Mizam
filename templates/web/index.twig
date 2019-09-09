@@ -1,0 +1,53 @@
+{% extends "parts/generic_frame.twig" %}
+
+{% block content %}
+    {% if errors %}
+        <div class=".error">
+            {% for error in errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if user_session %}
+        <h2>upload image</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ user_session.csrf_token }}">
+            <p><label>file <input type="file" name="file"></label></p>
+            <p>
+                <button class="btn waves-effect waves-light" type="submit">送信</button>
+            </p>
+        </form>
+    {% endif %}
+
+    <h2>uploaded image(s)</h2>
+
+    <div class="row">
+        {% if image_list |length == 0 %}
+            <p>any image uploaded.</p>
+        {% endif %}
+        {% for image in image_list %}
+            <div class="col s12 m3">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="{{ image.getThumbnailUrl }}" style="max-width:300px;max-height:300px;">
+                    </div>
+                    <div class="card-content">
+                        <p>{{ image.getFileName }}</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="btn" href="{{ image.getDownloadUrl }}">Download</a>
+
+                        {% if image.user_id == user_session.user_id %}
+                            <form action="/delete/{{ image.id }}" method="post" style="display: inline">
+                                <input type="hidden" name="csrf_token" value="{{ user_session.csrf_token }}">
+                                <button class="btn" type="submit">del</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
