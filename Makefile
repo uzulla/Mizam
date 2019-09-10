@@ -18,7 +18,7 @@ composer.phar:
 	rm composer-setup.php
 
 .PHONY: composer-install
-composer-install:
+composer-install: composer.phar
 	$(PHP_PATH) composer.phar install
 
 .PHONY: local-reset
@@ -31,6 +31,15 @@ local-reset:
 .PHONY: test
 test:
 	$(PHP_PATH) vendor/bin/phpunit tests/
+
+# setup mysql
+.PHONY: init-mysql
+init-mysql: db/generate_mysql_ddl.sql composer-install
+	$(PHP_PATH) cli/load_sample_to_mysql.php
+
+db/generate_mysql_ddl.sql:
+	echo "generate ddl"
+	cd db && ./generate_mysql_ddl.sh
 
 # for heroku
 
@@ -57,6 +66,7 @@ uzulla-local-reset-all: local-reset
 	find . | grep .DS_Store |xargs rm
 	-rm composer.phar
 	-rm db/sqlite.db
+	-rm db/*.sql
 	-rm dev.env
 	-rm -r vendor/
 	-rm -r restriction_htdocs/
