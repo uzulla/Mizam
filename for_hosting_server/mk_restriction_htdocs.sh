@@ -35,7 +35,7 @@ rm restriction_htdocs/thumbnail_files
 mkdir restriction_htdocs/thumbnail_files
 
 # echo app以下を保護するためにhtaccessを設置（Apacheのみ有効）
-cp for_hosting_server/deny_all.htaccess restriction_htdocs/app/
+cp for_hosting_server/deny_all.htaccess restriction_htdocs/app/.htaccess
 
 # echo autoloadのPathを変更したindex.phpを設置
 cp for_hosting_server/index.php restriction_htdocs/index.php
@@ -47,6 +47,6 @@ cp for_hosting_server/sample.htaccess restriction_htdocs/.htaccess
 cp sample.env restriction_htdocs/app/dev.env
 sed -i -e "s|DB_DSN=\"sqlite:../db/sqlite.db\"|DB_DSN=\"sqlite:app/db/sqlite.db\"|g" restriction_htdocs/app/dev.env
 sed -i -e "s|LOCAL_BLOB_STORE_DIR=\"../upload_files/original_files\"|LOCAL_BLOB_STORE_DIR=\"app/upload_files/original_files\"|g" restriction_htdocs/app/dev.env
-sed -i -e "s|LOCAL_THUMBNAIL_STORE_DIR=\"../upload_files/thumbnail_files\"|LOCAL_THUMBNAIL_STORE_DIR=\"upload_files/thumbnail_files\"|g" restriction_htdocs/app/dev.env
+sed -i -e "s|LOCAL_THUMBNAIL_STORE_DIR=\"../upload_files/thumbnail_files\"|LOCAL_THUMBNAIL_STORE_DIR=\"thumbnail_files\"|g" restriction_htdocs/app/dev.env
 
 echo restriction_htdocs/ にファイルを再配置しました。
