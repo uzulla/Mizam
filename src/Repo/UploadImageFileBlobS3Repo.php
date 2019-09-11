@@ -5,6 +5,7 @@ namespace Mizam\Repo;
 
 use Exception;
 use InvalidArgumentException;
+use Mizam\Env;
 use Mizam\Log;
 use Mizam\Service\S3ClientService;
 use RuntimeException;
@@ -107,7 +108,7 @@ class UploadImageFileBlobS3Repo implements UploadImageFileBlobRepoInterface
 
     private static function getBucketName():string
     {
-        $bucket = getenv("S3_BUCKET_NAME");
+        $bucket = Env::getenv("S3_BUCKET_NAME");
         if ($bucket === false) {
             throw new InvalidArgumentException("ENV:S3_BUCKET_NAME is undefined");
         }

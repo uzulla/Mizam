@@ -5,6 +5,7 @@ namespace Mizam\Service;
 
 use Exception;
 use InvalidArgumentException;
+use Mizam\Env;
 use Mizam\Model\UploadImageFile as UploadFileAlias;
 use Mizam\Model\UploadImageFile;
 use Mizam\Model\User;
@@ -50,7 +51,7 @@ class UploadImageFileService
 
     private static function getBlobRepo(): UploadImageFileBlobRepoInterface
     {
-        $blob_store_class_name = getenv("BLOB_STORE_CLASS");
+        $blob_store_class_name = Env::getenv("BLOB_STORE_CLASS");
         if ($blob_store_class_name === false) {
             throw new InvalidArgumentException("undefined BLOB_STORE_CLASS");
         }

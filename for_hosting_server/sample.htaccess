@@ -4,6 +4,12 @@
 # order allow,deny
 # allow from env=host
 
+# レンサバ用、デフォルトでDisableされていることが多いので。
+php_flag log_errors On
+php_value display_errors On
+php_value error_reporting -1
+php_value date.timezone Asia/Tokyo
+
 # アプリ用のRewrite
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f

@@ -5,6 +5,7 @@ namespace Mizam\Repo;
 
 use Exception;
 use InvalidArgumentException;
+use Mizam\Env;
 use Mizam\Log;
 use PDO;
 
@@ -40,13 +41,13 @@ class DBBase
      */
     public static function getNewPdo(): PDO
     {
-        static::$db_type = getenv("DB_TYPE");
+        static::$db_type = Env::getenv("DB_TYPE");
         if (static::$db_type === false) {
             throw new InvalidArgumentException("undefined DB_TYPE in env.");
         }
 
         if (static::$db_type == 'sqlite') {
-            $dsn = getenv("DB_DSN");
+            $dsn = Env::getenv("DB_DSN");
             Log::debug("dsn: $dsn");
 
             if ($dsn === false) {
@@ -56,10 +57,10 @@ class DBBase
             $pdo = new PDO($dsn);
 
         } else if (static::$db_type === 'mysql') {
-            $dsn = getenv("DB_DSN");
+            $dsn = Env::getenv("DB_DSN");
             Log::debug("dsn: $dsn");
-            $db_user_name = getenv("DB_USER_NAME");
-            $db_user_pass = getenv("DB_USER_PASS");
+            $db_user_name = Env::getenv("DB_USER_NAME");
+            $db_user_pass = Env::getenv("DB_USER_PASS");
 
             if ($dsn === false) {
                 throw new InvalidArgumentException("undefined DB_DSN.");
@@ -70,7 +71,7 @@ class DBBase
 
         } else if (static::$db_type === 'heroku_pg') {
 
-            $db = parse_url(getenv("DATABASE_URL"));
+            $db = parse_url(Env::getenv("DATABASE_URL"));
             Log::debug("parsed_db: ", $db);
             $pdo = new PDO("pgsql:" . sprintf(
                     "host=%s;port=%s;user=%s;password=%s;dbname=%s",

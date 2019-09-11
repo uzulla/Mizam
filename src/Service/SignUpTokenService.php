@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Mizam\Service;
 
 use Exception;
+use Mizam\Env;
 use Mizam\Log;
 use Mizam\Model\SignUpToken;
 use Mizam\Model\User;
@@ -34,7 +35,7 @@ class SignUpTokenService
             [
                 'nick' => $sign_up_token->user_nick,
                 'token' => $sign_up_token->token,
-                'verify_url' => getenv("SITE_URL") . "sign/up/verify/{$sign_up_token->token}"
+                'verify_url' => Env::getenv("SITE_URL") . "sign/up/verify/{$sign_up_token->token}"
             ]
         );
 
@@ -43,7 +44,7 @@ class SignUpTokenService
         static::sendEmail(
             $subject,
             $body,
-            [getenv("MAIL_FROM") => "img uploader admin"],
+            [Env::getenv("MAIL_FROM") => "img uploader admin"],
             [$sign_up_token->user_login_id => $sign_up_token->user_nick]
         );
     }

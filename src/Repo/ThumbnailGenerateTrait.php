@@ -7,6 +7,11 @@ use InvalidArgumentException;
 
 trait ThumbnailGenerateTrait
 {
+    /**
+     * @param string $file_path
+     * @param string $to_path
+     * @param int $long_px
+     */
     public static function createThumbnail(string $file_path, string $to_path, int $long_px = 100): void
     {
         $img = self::imageCreateFromImageFile($file_path);

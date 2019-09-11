@@ -5,6 +5,7 @@ namespace Mizam\Traits;
 
 use Exception;
 use InvalidArgumentException;
+use Mizam\Env;
 use Mizam\Log;
 use Swift_Attachment;
 use Swift_Mailer;
@@ -35,20 +36,20 @@ trait EmailSendTrait
         array $bcc = []
     ): int
     {
-        $mail_method = getenv("MAIL_METHOD");
+        $mail_method = Env::getenv("MAIL_METHOD");
 
         if ($mail_method === 'smtp') {
             Log::debug("use smtp");
             $transport = new Swift_SmtpTransport(
-                getenv("SMTP_HOST"),
-                getenv("SMTP_PORT")
+                Env::getenv("SMTP_HOST"),
+                Env::getenv("SMTP_PORT")
             );
-            $transport->setUsername(getenv("SMTP_USER_NAME"));
-            $transport->setPassword(getenv("SMTP_USER_PASS"));
+            $transport->setUsername(Env::getenv("SMTP_USER_NAME"));
+            $transport->setPassword(Env::getenv("SMTP_USER_PASS"));
 
         } elseif ($mail_method === 'sendmail') {
             Log::debug("use sendmail");
-            $sendmail_cli = getenv("SENDMAIL_CLI");
+            $sendmail_cli = Env::getenv("SENDMAIL_CLI");
             $transport = new Swift_SendmailTransport($sendmail_cli);
 
         } else {

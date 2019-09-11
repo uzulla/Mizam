@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Mizam\Web;
 
 use Exception;
+use Mizam\Env;
 use Mizam\Log;
 use Mizam\Model\User;
 use Mizam\Service\Random;
@@ -23,7 +24,7 @@ class Session
      */
     public static function configureSessionHandler()
     {
-        $redis_url = getenv("REDIS_URL"); // Heroku Redisを想定しています
+        $redis_url = Env::getenv("REDIS_URL"); // Heroku Redisを想定しています
         if ($redis_url !== false) {
             // 環境互換性の為にPure PHPな Predis のsession handlerをつかっていますが、
             // 可能なら ext-redis 等のC拡張セッションハンドラの方が速度が出ます

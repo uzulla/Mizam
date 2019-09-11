@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Mizam\Repo;
 
 use Exception;
+use Mizam\Env;
 use Mizam\Model\User;
 use PDO;
 use RuntimeException;
@@ -92,7 +93,7 @@ created_at
             throw new RuntimeException("insert failed.");
         }
 
-        if(getenv("DB_TYPE")=='heroku_pg'){
+        if(Env::getenv("DB_TYPE")=='heroku_pg'){
             $stmt = $pdo->prepare("select lastval() as lastval;");
             $stmt->execute();
             $res = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -5,6 +5,7 @@ namespace Mizam\Repo;
 
 use Exception;
 use InvalidArgumentException;
+use Mizam\Env;
 use Mizam\Log;
 use RuntimeException;
 
@@ -63,7 +64,7 @@ class UploadImageFileBlobLocalRepo implements UploadImageFileBlobRepoInterface
      */
     private static function getFileName($id)
     {
-        $store_dir = getenv("LOCAL_BLOB_STORE_DIR");
+        $store_dir = Env::getenv("LOCAL_BLOB_STORE_DIR");
 
 
         if (
@@ -95,7 +96,7 @@ class UploadImageFileBlobLocalRepo implements UploadImageFileBlobRepoInterface
      */
     private static function getThumbnailFileName($id)
     {
-        $store_dir = getenv("LOCAL_THUMBNAIL_STORE_DIR");
+        $store_dir = Env::getenv("LOCAL_THUMBNAIL_STORE_DIR");
 
         if (
             $store_dir === false ||

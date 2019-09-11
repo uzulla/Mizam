@@ -5,6 +5,7 @@ namespace Mizam\Service;
 
 use Aws\S3\S3Client;
 use InvalidArgumentException;
+use Mizam\Env;
 
 class S3ClientService
 {
@@ -16,7 +17,7 @@ class S3ClientService
         }
 
         // s3 の認証情報は、ENV: AWS_ACCESS_KEY_ID および AWS_SECRET_ACCESS_KEYから発見される
-        if (getenv("AWS_ACCESS_KEY_ID") === false || getenv("AWS_SECRET_ACCESS_KEY") === false) {
+        if (Env::getenv("AWS_ACCESS_KEY_ID") === false || Env::getenv("AWS_SECRET_ACCESS_KEY") === false) {
             throw new InvalidArgumentException("AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY is undefined");
         }
 

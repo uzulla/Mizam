@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Mizam\Model;
 
+use Mizam\Env;
+
 class UploadImageFile
 {
     public $id = 0;
@@ -33,7 +35,7 @@ class UploadImageFile
 
     public function getThumbnailUrl()
     {
-        $base_url = getenv("THUMBNAIL_STORE_BASE_URL");
+        $base_url = Env::getenv("THUMBNAIL_STORE_BASE_URL");
         return "{$base_url}/{$this->id}.jpg";
     }
 }

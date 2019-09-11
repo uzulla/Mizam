@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Mizam\Cli;
 
 use Exception;
+use Mizam\Env;
 use Mizam\Service\SignUpTokenService;
 use Throwable;
 use Mizam\Log;
-use Dotenv\Dotenv;
 
 class DeleteExpire
 {
@@ -21,7 +21,7 @@ class DeleteExpire
         Log::debug("start DeleteExpire::run");
         try {
             // load configuration
-            static::loadDotEnv();
+            Env::loadDotEnv();
 
             $num = SignUpTokenService::deleteExpireRecords();
             Log::debug("SignUpTokenService::deleteExpireRecords is {$num}");
@@ -44,20 +44,5 @@ class DeleteExpire
             }
         }
         Log::debug("finish DeleteExpire::run");
-    }
-
-    /**
-     * @throws Exception
-     */
-    private static function loadDotEnv(): void
-    {
-        $env_type = getenv("ENV") ? getenv("ENV") : "dev";
-        Log::debug("env is {$env_type}");
-
-        $dot_env_dir = __DIR__ . "/../..";
-        if (file_exists($dot_env_dir . "/{$env_type}.env")) {
-            Dotenv::create($dot_env_dir, "{$env_type}.env")->load();
-            Log::debug("{$env_type}.env loaded:" . print_r(getenv(), true));
-        }
     }
 }

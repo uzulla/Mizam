@@ -56,7 +56,7 @@ class Log
     {
         if (is_null(static::$eventLogger)) {
             $logger = new Logger('event');
-            $handler = getenv("EVENT_LOG_HANDLER_TYPE");
+            $handler = Env::getenv("EVENT_LOG_HANDLER_TYPE");
 
             switch ($handler) {
                 case "disable":
@@ -64,7 +64,7 @@ class Log
                     break;
 
                 case "stream":
-                    $log_path = getenv("EVENT_LOG_PATH");
+                    $log_path = Env::getenv("EVENT_LOG_PATH");
                     $logger->pushHandler(new StreamHandler($log_path, Logger::NOTICE));
                     break;
 
@@ -83,7 +83,7 @@ class Log
     {
         if (is_null(static::$errorLogger)) {
             $logger = new Logger('error');
-            $handler = getenv("ERROR_LOG_HANDLER_TYPE");
+            $handler = Env::getenv("ERROR_LOG_HANDLER_TYPE");
 
             switch ($handler) {
                 case "disable":
@@ -91,7 +91,7 @@ class Log
                     break;
 
                 case "stream":
-                    $log_path = getenv("ERROR_LOG_PATH");
+                    $log_path = Env::getenv("ERROR_LOG_PATH");
                     $stream_handler = new StreamHandler($log_path, Logger::ERROR);
                     // エラーログは改行を有効に
                     $formatter = new LineFormatter(null, null, true);
@@ -114,7 +114,7 @@ class Log
     {
         if (is_null(static::$debugLogger)) {
             $logger = new Logger('debug');
-            $handler = getenv("DEBUG_LOG_HANDLER_TYPE");
+            $handler = Env::getenv("DEBUG_LOG_HANDLER_TYPE");
 
             switch ($handler) {
                 case "disable":
@@ -122,7 +122,7 @@ class Log
                     break;
 
                 case "stream":
-                    $log_path = getenv("DEBUG_LOG_PATH");
+                    $log_path = Env::getenv("DEBUG_LOG_PATH");
                     $stream_handler = new StreamHandler($log_path, Logger::DEBUG);
                     // デバッグログは改行を有効に
                     $formatter = new LineFormatter(null, null, true);
