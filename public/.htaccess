@@ -5,4 +5,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /index.php [QSA,L]
 
 # レンサバなど、.htaccessで環境変数を設定したい場合の例
-# SetEnv ENV prod
+# SetEnv ENV dev
