@@ -30,7 +30,7 @@
             <div class="col s12 m3">
                 <div class="card">
                     <div class="card-image">
-                        <img src="{{ image.getThumbnailUrl }}" style="max-width:300px;max-height:300px;">
+                        <img src="{{ image.getThumbnailUrl }}" class="thumbnail-image" alt="thumbnail image">
                     </div>
                     <div class="card-content">
                         <p>{{ image.getFileName }}</p>
@@ -39,7 +39,7 @@
                         <a class="btn" href="{{ image.getDownloadUrl }}">Download</a>
 
                         {% if image.user_id == user_session.user_id %}
-                            <form action="/delete/{{ image.id }}" method="post" style="display: inline">
+                            <form action="/delete/{{ image.id }}" method="post" class="delete-button-form">
                                 <input type="hidden" name="csrf_token" value="{{ user_session.csrf_token }}">
                                 <button class="btn" type="submit">del</button>
                             </form>

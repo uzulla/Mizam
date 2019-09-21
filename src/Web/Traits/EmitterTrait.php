@@ -94,8 +94,10 @@ trait EmitterTrait
             "Content-Security-Policy" => implode(";", [
                 ## ref: https://developers.google.com/web/fundamentals/security/csp/?hl=ja
                 "default-src 'self'",
-                "script-src 'self' https://www.google-analytics.com",
-                "style-src 'self' 'unsafe-inline'",
+//                "script-src 'self' https://www.google-analytics.com", # sample for Analytics
+                "script-src 'self'",
+//                "style-src 'self' 'unsafe-inline'", # sample for inline css
+                "style-src 'self'",
                 "img-src *",
                 "frame-ancestors 'none'",
                 // "report-uri http://example.jp/csp-report.php"
