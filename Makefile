@@ -9,6 +9,10 @@ start:
 
 dev-setup: composer.phar composer-install local-reset dev.env 
 
+.PHONY: composer-dump-autoload-opt
+composer-dump-autoload-opt:
+	composer dump-autoload --optimize --no-dev
+
 dev.env:
 	cp sample.env dev.env
 
