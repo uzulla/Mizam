@@ -16,6 +16,10 @@ class App
         try {
             ini_set('error_reporting', "-1");
 
+            ini_set("session.cookie_httponly", "1");
+            ini_set("session.cookie_samesite", "Strict"); // PHP>=7.3
+            //ini_set("session.cookie_secure", "1"); // need https
+
             // enable output buffer
             ob_start();
 

@@ -1,8 +1,16 @@
+# レンサバなど、.htaccessで環境変数を設定したい場合の例
+# SetEnv ENV dev
+
 # アプリ動作用のRewrite
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /index.php [QSA,L]
 
-# レンサバなど、.htaccessで環境変数を設定したい場合の例
-# SetEnv ENV dev
+# https リダイレクト
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# HSTS, 有効にする前にかならず弊害を確認すること
+# http://classically.me/blogs/how-clear-hsts-settings-major-browsers/
+# Header set Strict-Transport-Security "max-age=31536000"

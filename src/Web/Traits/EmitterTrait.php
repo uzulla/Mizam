@@ -63,6 +63,20 @@ trait EmitterTrait
     }
 
     /**
+     * @param null $url
+     * @throws Exception
+     */
+    public static function sendCORSPrefetch($url = null)
+    {
+        static::sendHeaderAndFinishOb([
+            "Access-Control-Allow-Origin" => $url,
+            "Access-Control-Allow-Methods" => "GET, POST, PUT, DELETE",
+            "Access-Control-Allow-Headers" => "Origin, Authorization, Accept, Content-Type",
+            "Access-Control-Max-Age" => "3600"
+        ], [], 204);
+    }
+
+    /**
      * @param array $option_headers
      * @param CookieTrait[] $cookie_list
      * @param int $status_code
@@ -71,6 +85,25 @@ trait EmitterTrait
     private static function sendHeader(array $option_headers = [], array $cookie_list = [], int $status_code = 200): void
     {
         Log::debug("send header", ['headers' => $option_headers, 'cookie' => json_decode(json_encode($cookie_list)), 'status_code' => $status_code]);
+
+        ## ref: https://infosec.mozilla.org/guidelines/web_security
+        $option_headers = array_merge([
+            "X-Frame-Options" => "DENY",
+            "X-Content-Type-Options" => "nosniff",
+            "X-XSS-Protection" => "1; mode=block",
+            "Content-Security-Policy" => implode(";", [
+                ## ref: https://developers.google.com/web/fundamentals/security/csp/?hl=ja
+                "default-src 'self'",
+                "script-src 'self' https://www.google-analytics.com",
+                "style-src 'self' 'unsafe-inline'",
+                "img-src *",
+                "frame-ancestors 'none'",
+                // "report-uri http://example.jp/csp-report.php"
+            ]),
+            // "Content-Security-Policy-Report-Only"
+            // "Referrer-Policy" => "no-referrer, strict-origin-when-cross-origin",
+            // "Access-Control-Allow-Origin" => "https://example.jp"
+        ], $option_headers);
 
         if (count($option_headers) > 0) {
             foreach ($option_headers as $header => $val) {

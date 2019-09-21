@@ -1,0 +1,5 @@
+# 検索エンジン等によるクロールの拒否（登録の拒否）
+User-agent: *
+Disallow: /
+
+# Sitemap:https://example.jp/sitemap.xml
