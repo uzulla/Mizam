@@ -58,7 +58,7 @@ test:
 
 .PHONY: heroku-update-config
 heroku-update-config: heroku.env
-	cat heroku.env | grep -v '^#' | grep -v '^\s*$$' | xargs -L 1 echo heroku config:set | sh
+	cat heroku.env | grep -v '^#' | grep -v '^\s*$$' | xargs -0 -L 1 echo heroku config:set | sh
 
 .PHONY: heroku-deploy
 heroku-deploy:
