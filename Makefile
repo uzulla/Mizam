@@ -76,6 +76,15 @@ heroku-psql:
 heroku-import-to-psql-sample:
 	heroku run bash -c "cd db && ./heroku_import_to_pgsql.sh"
 
+.PHONY: heroku-bash
+heroku-bash:
+	heroku run bash
+
+.PHONY: heroku-open
+heroku-open:
+	heroku open
+
+
 # for hosting server
 
 # # ファイルをコピーしてレンサバ用のhtdocsを生成、事前にdev-setupをして下さい。
