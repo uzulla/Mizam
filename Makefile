@@ -3,15 +3,9 @@ DEV_SERVER_PORT = 8080
 DEV_SERVER_LISTEN_IP = 127.0.0.1
 PHP_PATH = php
 
-.PHONY: start
-start:
-	$(PHP_PATH) -S $(DEV_SERVER_LISTEN_IP):$(DEV_SERVER_PORT) -t $(DOCROOT)
+# 開発環境準備系(主にローカル開発用)
 
-dev-setup: composer.phar composer-install local-reset dev.env 
-
-.PHONY: composer-dump-autoload-opt
-composer-dump-autoload-opt:
-	composer dump-autoload --optimize --no-dev
+dev-setup: composer.phar composer-install local-reset dev.env
 
 dev.env:
 	cp sample.env dev.env
@@ -32,11 +26,11 @@ local-reset:
 	-rm upload_files/thumbnail_files/*
 	-rm upload_files/original_files/*
 
-.PHONY: test
-test:
-	$(PHP_PATH) vendor/bin/phpunit tests/
+.PHONY: composer-dump-autoload-opt
+composer-dump-autoload-opt:
+	composer dump-autoload --optimize --no-dev
 
-# setup mysql
+# # mysql利用時に初期データ流し込み。ENVが未設定だとdev（つまり、dev.envの情報を接続情報として使う）ものとして扱われます。
 .PHONY: init-mysql
 init-mysql: db/generate_mysql_ddl.sql composer-install
 	$(PHP_PATH) cli/load_sample_to_mysql.php
@@ -45,10 +39,25 @@ db/generate_mysql_ddl.sql:
 	echo "generate ddl"
 	cd db && ./generate_mysql_ddl.sh
 
+
+# for built in web server
+
+# # ビルトインウェブサーバーの起動
+.PHONY: start
+start:
+	$(PHP_PATH) -S $(DEV_SERVER_LISTEN_IP):$(DEV_SERVER_PORT) -t $(DOCROOT)
+
+.PHONY: test
+test:
+	$(PHP_PATH) vendor/bin/phpunit tests/
+
+
 # for heroku
 
+# # Herokuにheroku.envの情報を設定（事前にheroku.envをsample.envからコピー作成してください）
+
 .PHONY: heroku-update-config
-heroku-update-config:
+heroku-update-config: heroku.env
 	cat heroku.env | grep -v '^#' | grep -v '^\s*$$' | xargs -L 1 echo heroku config:set | sh
 
 .PHONY: heroku-deploy
@@ -59,12 +68,17 @@ heroku-deploy:
 heroku-log-tail:
 	heroku logs -t
 
-# ファイルをコピーしてレンサバ用のhtdocsを生成、事前にdev-setupをして下さい。
+
+# for hosting server
+
+# # ファイルをコピーしてレンサバ用のhtdocsを生成、事前にdev-setupをして下さい。
 .PHONY: restriction_htdocs
 restriction_htdocs:
 	for_hosting_server/mk_restriction_htdocs.sh
 
-# uzulla作業用
+
+# uzulla作業用、全てが消えるので危険です。
+
 .PHONY: uzulla-local-reset-all
 uzulla-local-reset-all: local-reset
 	find . | grep .DS_Store |xargs rm
