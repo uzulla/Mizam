@@ -40,12 +40,13 @@ $ cd mizam-heroku
 $ heroku git:remote -a your-heroku-app-name
 
 # heroku.envの作成、サンプルは後述。一つ一つ heroku config:set FOO=BAR すれば必須ではない
+# (app.jsonのenvプロパティに書いても良いのですが、本アプリは学習用なので)
 $ cp sample.env heroku.env
 $ vi heroku.env
 $ make heroku-update-config # appにheroku.envの内容を反映
 
 # 必要なaddonの有効化
-# (app.jsonに書いても良いのですが、本アプリは学習用なので)
+# (app.jsonのaddonプロパティに書いても良いのですが、本アプリは学習用なので)
 $ heroku addons:create heroku-postgresql:hobby-dev
 # REDIS_URLがENVにあれば、REDISをsessionで使うようになっています
 $ heroku addons:create heroku-redis:hobby-dev
@@ -54,6 +55,7 @@ $ heroku addons:create heroku-redis:hobby-dev
 $ make heroku-deploy
 
 # DBへサンプルのDBを反映
+# (ちゃんとしたDBスキーママイグレーションツールをつかうなら、app.jsonのscripts.postdeployに指定してもよい）
 $ make heroku-import-to-psql-sample
 
 $ heroku open # ブラウザが開いて確認
