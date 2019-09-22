@@ -74,7 +74,7 @@ heroku-psql:
 
 .PHONY: heroku-import-to-psql-sample
 heroku-import-to-psql-sample:
-	heroku run bash -c "cd db && heroku_import_to_pgsql.sh"
+	heroku run bash -c "cd db && ./heroku_import_to_pgsql.sh"
 
 # for hosting server
 
