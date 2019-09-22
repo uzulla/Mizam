@@ -68,6 +68,13 @@ heroku-deploy:
 heroku-log-tail:
 	heroku logs -t
 
+.PHONY: heroku-psql
+heroku-psql:
+	heroku run bash -c "db/heroku_open_psql_shell.sh"
+
+.PHONY: heroku-import-to-psql-sample
+heroku-import-to-psql-sample:
+	heroku run bash -c "cd db && heroku_import_to_pgsql.sh"
 
 # for hosting server
 
