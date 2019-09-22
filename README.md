@@ -45,6 +45,7 @@ $ vi heroku.env
 $ make heroku-update-config # appにheroku.envの内容を反映
 
 # 必要なaddonの有効化
+# (app.jsonに書いても良いのですが、本アプリは学習用なので)
 $ heroku addons:create heroku-postgresql:hobby-dev
 # REDIS_URLがENVにあれば、REDISをsessionで使うようになっています
 $ heroku addons:create heroku-redis:hobby-dev
