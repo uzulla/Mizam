@@ -95,6 +95,78 @@ SMTP_USER_NAME="9XXXXXX2"
 SMTP_USER_PASS="fXXXXXX7"
 ```
 
+### レンタルサーバー等
+
+htdocsより上位にファイルを設置できないサーバーで、サンプルコードを動かす例です。
+「レンタルサーバーだからこうしなければならない」ということではありません。（しかし、多くのレンタルサーバーではこの制限があります）
+
+`make restriction_htdocs`を実行してのファイル再配置は、サンプルコードを制限でも動作するように再配置を手順化したもので、これを利用して開発を続けるためのものではありません。再配置した後は再配置後のファイルを修正していくことになります。
+
+```
+# Composer installなどを実行
+$ make dev-setup
+
+$ make restriction_htdocs
+# restriction_htdocs 以下にファイルが再配置されます
+# これ以後はrestriction_htdocsの中のファイルをいじって下さい。
+
+$ cd restriction_htdocs
+# 設定を必要に応じて修正してください
+$ vi dev.env
+
+# restriction_htdocs内のファイルをすべてアップロードします
+# .htaccessなど、dotファイルをアップロード漏れしないように注意
+$ lftp hoge@example.jp
+lftp> cd htdocs
+lftp> mirror -R . .
+```
+
+以上で動作するはずです。
+
+エラーが出る場合はエラーログを確認し、PHPのバージョンが適切か確認して下さい（PHP7.3を想定しています）
+
+
+#### Mysqlをつかう
+
+デフォルトではsqliteをDBとして用いているので、mysqlをDBとするようにenvを修正します。
+
+事前に業者のコンパネなどでデータベースを作り、接続情報をメモして下さい。
+
+```
+# (手元のPCで）
+$ cd app/db
+$ ./generate_mysql_ddl.sh
+# migration/* 以下にあるsqlite3用のDDLからMysqlに通せるSQLを生成しています。
+# このツールで生成するSQLはあくまでもサンプルコードの「手抜き」のためです
+# **実用的なものでは有りません**
+
+$ cat ./generate_mysql_ddl.sql
+# このSQLをレンサバ業者が提供するDB操作ツール等で実行します。
+# usersなどのテーブルが作成されます。
+```
+
+`dev.env`等を修正します。まずはsqliteの記述を無効にします、以下の行を削除やコメントアウト（行頭に#)してください。
+
+```
+# DB設定 sqlite利用時
+DB_TYPE="sqlite"
+# pubic/index.php からの相対パス
+DB_DSN="sqlite:app/db/sqlite.db"
+```
+
+次にMysqlの情報を有効にします。これらをレンサバの情報に書き直し、コメントイン（行頭の#を削除）します。
+
+```
+# DB設定 mysqld利用時
+DB_TYPE="mysql"
+DB_DSN="mysql:host=mysqlXXX.db.sakura.ne.jp;dbname=mizam-sample;charset=utf8mb4"
+DB_USER_NAME="mizam-sample"
+DB_USER_PASS="XXXXXXXXXXXXXXX"
+```
+
+sqliteでなく、Mysqlで動作しているか確認するには、`app/db/sqlite.db`を削除してログインしてみるなどでよいでしょう。
+
+
 
 ## settings
 
